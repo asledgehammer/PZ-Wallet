@@ -1,5 +1,7 @@
 # PZ-Wallet - VSCode Extension
 
+![img](./assets/media/banner.gif)
+
 A VSCode extension for Lua snippets and templates for modding the game \"Project Zomboid\".
 
 ## Features
