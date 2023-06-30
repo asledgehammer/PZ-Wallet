@@ -64,7 +64,14 @@ export class WalletTemplate {
         split.pop(); // Remove the extension and preserve any dots used in the name itself. AKA: My.Lua.File.lua = 'My_Lua_File'
         const fileName = split.join('.').replace('.', '_').replace(/\\s/g, '_');
 
-        return this.text.replace(/(__FILE_NAME__)/g, fileName);
+        let text = this.text.replace(/(__FILE_NAME__)/g, fileName);
+
+        // Replace '__[1->16]__' in template to vscode '${[1-16]}' format.
+        for (let i = 1; i <= 16; i++) {
+            while (text.indexOf(`__${i}__`) !== -1) text = text.replace(`__${i}__`, `\${${i}}`);
+        }
+
+        return text;
     }
 
     static fromFile(uri: string): WalletTemplate | undefined {

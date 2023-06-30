@@ -47,6 +47,10 @@
             {
                 "command": "wallet-reload-templates",
                 "title": "PZ-Wallet: Reload Templates"
+            },
+            {
+                "command": "wallet-open-templates-folder",
+                "title": "PZ-Wallet: Open Templates Folder"
             }
         ]
     }

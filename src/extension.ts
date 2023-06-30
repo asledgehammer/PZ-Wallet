@@ -40,14 +40,21 @@ export function activate(context: vscode.ExtensionContext) {
             },
         });
 
-        const command = vscode.commands.registerCommand('wallet-reload-templates', () =>
+        const cmdReloadTemplates = vscode.commands.registerCommand('wallet-reload-templates', () =>
             pullFromGitHubRepo(
                 'https://github.com/asledgehammer/PZ-Wallet-Templates.git',
                 `${dirTemplates}/pz-wallet-templates`
             ).then(() => loadTemplates(true))
         );
 
-        context.subscriptions.push(provider1, command);
+        const cmdOpenTemplatesFolder = vscode.commands.registerCommand('wallet-open-templates-folder', () => {
+            let dir = dirTemplates;
+            while (dir.indexOf('\\') !== -1) dir = dir.replace('\\', '/');
+            const uri = vscode.Uri.file(dir);
+            vscode.commands.executeCommand(`vscode.openFolder`, uri, { forceNewWindow: true });
+        });
+
+        context.subscriptions.push(provider1, cmdReloadTemplates, cmdOpenTemplatesFolder);
     } catch (err) {
         vscode.window.showErrorMessage(`PZ-Wallet: Failed to activate extension.`, (err as any).stack);
     }

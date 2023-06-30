@@ -26,8 +26,17 @@ A VSCode extension for Lua snippets and templates for modding the game \"Project
 - Type `wallet-` and you should see templates populate.
 
 ## Update Templates
-- Execute `git submodule update --remote`. This will pull the templates from [PZ-Wallet-Templates](https://github.com/asledgehammer/PZ-Wallet-Templates).
-- Restart the debugger in VSCode. The changes should apply.
+Templates are located in `%USER_HOME%/documents/asledgehammer/vscode/pz-wallet/templates/`. The PZ-Wallet-Templates 
+repository is checked and pulled everytime the extension loads. Other templates may be placed inside the templates folder.
+
+## Commands
+
+### PZ-Wallet: Reload Templates
+Reloads templates without relaunching vscode to update them.
+
+### PZ-Wallet: Open Templates Folder
+Opens a new vscode window pointing at the templates folder mentioned above.
+
 ## Release Notes
 
 ## [41.78.0]
