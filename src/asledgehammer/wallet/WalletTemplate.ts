@@ -110,7 +110,7 @@ export class WalletTemplate {
                     try {
                         const template = WalletTemplate.fromFile(filePath);
                         if (template !== undefined) {
-                            console.log(`Loaded template: ${filePath.split('/assets/lua//')[1]}`);
+                            console.log(`Loaded template: ${filePath}`);
                             templates[template.id] = template;
                         }
                     } catch (err) {

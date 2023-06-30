@@ -1,6 +1,6 @@
 /**
  * **WalletTemplateInfo**
- * 
+ *
  * @author Jab
  */
 export type WalletTemplateInfo = {

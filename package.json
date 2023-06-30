@@ -39,6 +39,15 @@
     },
     "license": "MIT",
     "dependencies": {
-        "luaparse": "^0.3.1"
+        "luaparse": "^0.3.1",
+        "simple-git": "^3.19.1"
+    },
+    "contributes": {
+        "commands": [
+            {
+                "command": "wallet-reload-templates",
+                "title": "PZ-Wallet: Reload Templates"
+            }
+        ]
     }
 }
