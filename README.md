@@ -15,7 +15,6 @@ A VSCode extension for Lua snippets and templates for modding the game \"Project
 - Select one of the snippets or templates and hit ENTER.
 - The snippet or template is applied to the text cursor in your document.
 
-
 ## How to install the project
 - Clone the repository
 - Execute `git submodule update --remote`. This will pull the templates from [PZ-Wallet-Templates](https://github.com/asledgehammer/PZ-Wallet-Templates).

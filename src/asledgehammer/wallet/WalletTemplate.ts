@@ -62,7 +62,8 @@ export class WalletTemplate {
         let split = document.fileName.replace(/\\/g, '/').replace(/-/g, '_').split('/');
         split = split[split.length - 1].split('.');
         split.pop(); // Remove the extension and preserve any dots used in the name itself. AKA: My.Lua.File.lua = 'My_Lua_File'
-        const fileName = split.join('.').replace('.', '_').replace(/\\s/g, '_');
+        let fileName = split.join('.').replace('.', '_').replace(/\\s/g, '_');
+        if(fileName === '' || fileName === null || fileName === undefined) fileName = 'Untitled';
 
         let text = this.text.replace(/(__FILE_NAME__)/g, fileName);
 
