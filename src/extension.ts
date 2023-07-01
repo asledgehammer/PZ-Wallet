@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
             ) {
                 const templateSnippets: vscode.CompletionItem[] = [];
                 for (const key of Object.keys(templates)) {
-                    templateSnippets.push(templates[key].tooltip(document));
+                    templateSnippets.push(templates[key].tooltip(templates, document));
                 }
                 return templateSnippets;
             },

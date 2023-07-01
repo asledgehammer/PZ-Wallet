@@ -3,7 +3,7 @@ import * as fs from 'fs';
 
 import parser = require('luaparse');
 import { WalletTemplateInfo } from './WalletTemplateInfo';
-import { getFileNameFromURI, getTemplateBlock, getTemplateInfo } from './WalletTemplateUtils';
+import { getFileNameFromURI, getTemplateBlock, getTemplateInfo, removeWrappingNewLines } from './WalletTemplateUtils';
 
 /**
  * **WalletTemplate**
@@ -26,7 +26,7 @@ export class WalletTemplate {
                 .join('\r\n') + '\r\n';
     }
 
-    tooltip(document: vscode.TextDocument): vscode.CompletionItem {
+    tooltip(templates: { [id: string]: WalletTemplate }, document: vscode.TextDocument): vscode.CompletionItem {
         const { info } = this;
         const { name, description, version, authors } = info;
 
@@ -51,21 +51,53 @@ export class WalletTemplate {
         }
 
         const item = new vscode.CompletionItem(`wallet-${this.id}`);
-        item.insertText = new vscode.SnippetString(this.apply(document));
+        item.insertText = new vscode.SnippetString(this.apply(templates, document) + '\r\n');
         item.detail = name;
         item.documentation = new vscode.MarkdownString(descString);
         return item;
     }
 
-    apply(document: vscode.TextDocument): string {
+    apply(
+        templates: { [id: string]: WalletTemplate },
+        document: vscode.TextDocument,
+        chain: { [id: string]: WalletTemplate } = {}
+    ): string {
         /* (Grab the file's name of the open document) */
         let split = document.fileName.replace(/\\/g, '/').replace(/-/g, '_').split('/');
         split = split[split.length - 1].split('.');
         split.pop(); // Remove the extension and preserve any dots used in the name itself. AKA: My.Lua.File.lua = 'My_Lua_File'
         let fileName = split.join('.').replace('.', '_').replace(/\\s/g, '_');
-        if(fileName === '' || fileName === null || fileName === undefined) fileName = 'Untitled';
+        if (fileName === '' || fileName === null || fileName === undefined) fileName = 'Untitled';
 
-        let text = this.text.replace(/(__FILE_NAME__)/g, fileName);
+        let text = this.text;
+        if (text.indexOf('@template-insert') !== -1) {
+            text = text
+                .split('\r\n')
+                .map((line) => {
+                    if (line.indexOf('@template-insert') !== -1) {
+                        const id = line.split('@template-insert')[1].trim();
+                        const templateToInsert = templates[id];
+
+                        if (templateToInsert !== undefined) {
+                            // Absolutely make sure that templates cannot reference themselves.
+                            if (templateToInsert === this) return '';
+
+                            // Use the chain to identify if the template referenced is a cyclical dependency.
+                            if (chain[id] !== undefined) return '';
+
+                            const newChain = { ...chain };
+                            newChain[id] = templateToInsert;
+                            return templateToInsert.apply(templates, document, newChain);
+                        }
+                        return '';
+                    }
+                    return line;
+                })
+                .join('\r\n');
+        }
+
+        text = text.replace(/(__FILE_NAME__)/g, fileName);
+        text = removeWrappingNewLines(text.split('\r\n')).join('\r\n');
 
         // Replace '__[1->16]__' in template to vscode '${[1-16]}' format.
         for (let i = 1; i <= 16; i++) {

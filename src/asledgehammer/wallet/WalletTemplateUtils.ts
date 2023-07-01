@@ -20,6 +20,21 @@ export const toStringArray = (value: parser.TableConstructorExpression): string[
 
 export const toMultiLine = (value: parser.TableConstructorExpression): string => toStringArray(value).join('\n');
 
+export const removeWrappingNewLines = (lines: string[]): string[] => {
+    const lines2 = [...lines];
+    for(let i = 0; i < lines2.length; i++) {
+        const line = lines2[i];
+        if(line !== '') break;
+        lines2.reverse();
+        lines2.pop();
+        lines2.reverse();
+    }
+    while (lines2.length !== 0 && lines2[lines2.length - 1] === '') {
+        lines2.pop();
+    }
+    return lines2;
+};
+
 export const getTemplateBlock = (text: string): string => {
     let inside = false;
     const linesFiltered = [];
@@ -45,17 +60,7 @@ export const getTemplateBlock = (text: string): string => {
         }
     }
 
-    while (linesFiltered.length !== 0 && linesFiltered[0] === '') {
-        linesFiltered.reverse();
-        linesFiltered.pop();
-        linesFiltered.reverse();
-    }
-
-    while (linesFiltered.length !== 0 && linesFiltered[linesFiltered.length - 1] === '') {
-        linesFiltered.pop();
-    }
-
-    return linesFiltered.join('\r\n');
+    return removeWrappingNewLines(linesFiltered).join('\r\n');
 };
 
 export const getTemplateInfo = (uri: string, tableTemplate: parser.LocalStatement) => {
