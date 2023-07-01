@@ -2,7 +2,7 @@
     "name": "pz-wallet",
     "displayName": "PZ Wallet",
     "description": "A third-party VSCode extension for Lua templates for \"Project Zomboid\".",
-    "version": "41.78.0",
+    "version": "41.78.1",
     "engines": {
         "vscode": "^1.75.0"
     },

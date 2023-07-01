@@ -38,6 +38,12 @@ Opens a new vscode window pointing at the templates folder mentioned above.
 
 ## Release Notes
 
+## [41.78.1]
+- Added `@template-insert [template_id]` annotation, allowing for templates to insert other templates for organization
+and including dependent code.
+
+![img](./assets/media/template-insert.gif)
+
 ## [41.78.0]
 - Initial release.
 
